@@ -2,6 +2,7 @@ package com.example.tamaskozmer.kotlinrxexample.presentation.presenters
 
 import com.example.tamaskozmer.kotlinrxexample.domain.interactors.GetUsers
 import com.example.tamaskozmer.kotlinrxexample.presentation.view.UserListView
+import com.example.tamaskozmer.kotlinrxexample.presentation.view.viewmodels.UserViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
@@ -22,40 +23,39 @@ class UserListPresenter(
         getUsers.execute(pageToRequest, forced)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({
-                    users ->
-                    loading = false
-                    if (forced) {
-                        resetPaging()
-                    }
-                    if (page == 1) {
-                        view?.clearList()
-                        view?.hideEmptyListError()
-                    }
-                    view?.addUsersToList(users)
-                    view?.hideLoading()
-                    page++
-                },
-                {
-                    loading = false
-                    view?.hideLoading()
-                    if (page == 1) {
-                        view?.showEmptyListError()
-                    } else {
-                        view?.showToastError()
-                    }
-                })
+                .subscribe(
+                        { users -> handleSuccess(forced, users) },
+                        { handleError() })
     }
 
-    private fun resetPaging() {
-        page = 1
+    private fun handleSuccess(forced: Boolean, users: List<UserViewModel>) {
+        loading = false
+        if (forced) {
+            page = 1
+        }
+        if (page == 1) {
+            view?.clearList()
+            view?.hideEmptyListError()
+        }
+        view?.addUsersToList(users)
+        view?.hideLoading()
+        page++
+    }
+
+    private fun handleError() {
+        loading = false
+        view?.hideLoading()
+        if (page == 1) {
+            view?.showEmptyListError()
+        } else {
+            view?.showToastError()
+        }
     }
 
     fun onScrollChanged(lastVisibleItemPosition: Int, totalItemCount: Int) {
-        if (!loading) {
-            if (lastVisibleItemPosition >= totalItemCount - offset) {
-                getUsers()
-            }
+        val shouldGetNextPage = !loading && lastVisibleItemPosition >= totalItemCount - offset
+        if (shouldGetNextPage) {
+            getUsers()
         }
 
         if (loading && lastVisibleItemPosition >= totalItemCount) {
