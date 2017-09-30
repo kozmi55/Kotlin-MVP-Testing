@@ -3,14 +3,14 @@ package com.example.tamaskozmer.kotlinrxexample.presentation.presenters
 import com.example.tamaskozmer.kotlinrxexample.domain.interactors.GetUsers
 import com.example.tamaskozmer.kotlinrxexample.presentation.view.UserListView
 import com.example.tamaskozmer.kotlinrxexample.presentation.view.viewmodels.UserViewModel
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
+import com.example.tamaskozmer.kotlinrxexample.util.SchedulerProvider
 
 /**
  * Created by Tamas_Kozmer on 7/4/2017.
  */
 class UserListPresenter(
-        private val getUsers: GetUsers) : BasePresenter<UserListView>() {
+        private val getUsers: GetUsers,
+        private val schedulerProvider: SchedulerProvider) : BasePresenter<UserListView>() {
 
     private val offset = 5
 
@@ -21,8 +21,8 @@ class UserListPresenter(
         loading = true
         val pageToRequest = if (forced) 1 else page
         getUsers.execute(pageToRequest, forced)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(schedulerProvider.ioScheduler())
+                .observeOn(schedulerProvider.uiScheduler())
                 .subscribe(
                         { users -> handleSuccess(forced, users) },
                         { handleError() })
