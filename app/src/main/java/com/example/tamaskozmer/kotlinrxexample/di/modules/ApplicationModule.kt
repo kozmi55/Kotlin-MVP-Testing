@@ -4,6 +4,7 @@ import android.arch.persistence.room.Room
 import android.content.Context
 import com.example.tamaskozmer.kotlinrxexample.CustomApplication
 import com.example.tamaskozmer.kotlinrxexample.model.persistence.AppDatabase
+import com.example.tamaskozmer.kotlinrxexample.model.repositories.DefaultUserRepository
 import com.example.tamaskozmer.kotlinrxexample.model.repositories.UserRepository
 import com.example.tamaskozmer.kotlinrxexample.model.services.UserService
 import com.example.tamaskozmer.kotlinrxexample.util.*
@@ -39,7 +40,7 @@ class ApplicationModule(val application: CustomApplication) {
     @Singleton
     fun provideUserRepository(retrofit: Retrofit, database: AppDatabase, connectionHelper: ConnectionHelper,
                               preferencesHelper: PreferencesHelper, calendarWrapper: CalendarWrapper): UserRepository {
-        return UserRepository(
+        return DefaultUserRepository(
                 retrofit.create(UserService::class.java),
                 database.userDao(),
                 connectionHelper,

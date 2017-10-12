@@ -11,7 +11,7 @@ import dagger.Provides
  * Created by Tamas_Kozmer on 7/4/2017.
  */
 @Module
-class UserListFragmentModule() {
+class MainActivityModule() {
     @Provides
     fun provideGetUsers(userRepository: UserRepository) = GetUsers(userRepository)
 

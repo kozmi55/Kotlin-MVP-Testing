@@ -8,7 +8,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.widget.Toast
 import com.example.tamaskozmer.kotlinrxexample.R
-import com.example.tamaskozmer.kotlinrxexample.di.modules.UserListFragmentModule
+import com.example.tamaskozmer.kotlinrxexample.di.modules.MainActivityModule
 import com.example.tamaskozmer.kotlinrxexample.presentation.presenters.UserListPresenter
 import com.example.tamaskozmer.kotlinrxexample.presentation.view.UserListView
 import com.example.tamaskozmer.kotlinrxexample.presentation.view.viewmodels.UserViewModel
@@ -19,7 +19,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 class MainActivity : AppCompatActivity(), UserListView {
 
     private val presenter: UserListPresenter by lazy { component.presenter() }
-    private val component by lazy { customApplication.component.plus(UserListFragmentModule()) }
+    private val component by lazy { customApplication.component.plus(MainActivityModule()) }
     private val adapter by lazy {
         val userList = mutableListOf<UserViewModel>()
         UserListAdapter(userList) {
