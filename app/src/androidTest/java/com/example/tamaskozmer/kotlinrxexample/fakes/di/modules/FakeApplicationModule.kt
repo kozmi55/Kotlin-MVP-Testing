@@ -1,6 +1,5 @@
 package com.example.tamaskozmer.kotlinrxexample.fakes.di.modules
 
-import com.example.tamaskozmer.kotlinrxexample.fakes.model.repositories.FakeUserRepository
 import com.example.tamaskozmer.kotlinrxexample.model.repositories.UserRepository
 import com.example.tamaskozmer.kotlinrxexample.util.AppSchedulerProvider
 import com.example.tamaskozmer.kotlinrxexample.util.SchedulerProvider
@@ -12,12 +11,12 @@ import javax.inject.Singleton
  * Created by Tamas_Kozmer on 8/8/2017.
  */
 @Module
-class FakeApplicationModule {
+class FakeApplicationModule(val userRepository: UserRepository) {
 
     @Provides
     @Singleton
     fun provideUserRepository() : UserRepository {
-        return FakeUserRepository()
+        return userRepository
     }
 
     @Provides
