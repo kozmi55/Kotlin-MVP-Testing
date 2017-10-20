@@ -47,7 +47,7 @@ class UserRepositoryTest {
     @Before
     fun setup() {
         MockitoAnnotations.initMocks(this)
-        userRepository = DefaultUserRepository(mockUserService, mockUserDao, mockConnectionHelper, mockPreferencesHelper, mockCalendarWrapper)
+        userRepository = UserRepository(mockUserService, mockUserDao, mockConnectionHelper, mockPreferencesHelper, mockCalendarWrapper)
     }
 
     @Test

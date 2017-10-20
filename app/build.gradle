@@ -1,10 +1,11 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-allopen'
 
 android {
     compileSdkVersion 26
-    buildToolsVersion "26.0.1"
+    buildToolsVersion "26.0.2"
     defaultConfig {
         applicationId "com.example.tamaskozmer.kotlintestingdemo"
         minSdkVersion 16
@@ -23,6 +24,10 @@ android {
 
 kapt {
     generateStubs = true
+}
+
+allOpen {
+    annotation("com.example.tamaskozmer.kotlinrxexample.util.OpenClass")
 }
 
 dependencies {
